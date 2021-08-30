@@ -15,13 +15,11 @@ db.once('open', () => {
 //Import Routes
 const usersRoute = require('./routes/users')
 const foodsRoute = require('./routes/foods')
+const favoritesRoute = require('./routes/favorites')
 app.use(express.json())
 app.use('/users', usersRoute)
 app.use('/foods', foodsRoute)
-
-
-
-
+app.use('/favorites', favoritesRoute)
 
 // Listen this ports
 app.listen(3000)
