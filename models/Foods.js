@@ -21,6 +21,10 @@ const foodScheme = mongoose.Schema({
         type: Array,
         required: true
     },
+    ingredientIDs: {
+        type: Array,
+        required: true
+    },
     categoryID: {
         type: String,
         required: true

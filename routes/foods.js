@@ -1,13 +1,14 @@
-const express = require('express')
-const Foods = require('../models/Foods')
-const router = express.Router()
-    // GET ALL FOODS
+const express = require('express');
+const Foods = require('../models/Foods');
+const router = express.Router();
+// Last error code 4
+// GET ALL FOODS
 router.get('/', async(req, res) => {
     try {
         const foods = await Foods.find();
         res.json(foods)
     } catch (err) {
-        res.json({ message: err })
+        res.json({ message: err, errorCode: 2001 })
     }
 });
 // ADD A FOOD
@@ -19,6 +20,7 @@ router.post('/add', async(req, res) => {
         foodStatus: req.body.foodStatus,
         foodActivity: req.body.foodActivity,
         foodPicturePaths: req.body.foodPicturePaths,
+        ingredientIDs: req.body.ingredientIDs,
         categoryID: req.body.categoryID,
         userID: req.body.userID
     })
@@ -27,7 +29,7 @@ router.post('/add', async(req, res) => {
         const saveFood = await foods.save()
         res.json(saveFood)
     } catch (err) {
-        res.json({ errorMsg: err })
+        res.json({ errorMsg: err, errorCode: 2002 })
     }
 
 });
@@ -37,7 +39,7 @@ router.post('/getById', async(req, res) => {
         const food = await Foods.findById(req.body.id)
         res.json(food)
     } catch (err) {
-        res.json({ message: err })
+        res.json({ message: err, errorCode: 2003 })
     }
 });
 
@@ -47,7 +49,7 @@ router.post('/getByUserId', async(req, res) => {
         const food = await Foods.find({ 'userID': req.body.userID })
         res.json(food)
     } catch (err) {
-        res.json({ message: err })
+        res.json({ message: err, errorCode: 2004 })
     }
 })
 
