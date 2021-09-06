@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv/config');
 const app = express();
 
@@ -16,6 +17,7 @@ db.once('open', () => {
 const usersRoute = require('./routes/users')
 const foodsRoute = require('./routes/foods')
 const favoritesRoute = require('./routes/favorites')
+app.use(cors())
 app.use(express.json())
 app.use('/users', usersRoute)
 app.use('/foods', foodsRoute)

@@ -52,28 +52,28 @@ router.post('/logIn', async(req, res) => {
 });
 // USER REGISTER
 router.post('/signUp', async(req, res) => {
-
-    const allUsers = await Users.find();
-
-    allUsers.forEach(u => {
-        if (u.userEmail == req.body.userEmail) {
-            res.json({ message: "Email address already in use!", errorCode: 1001 })
-        }
-    });
-
-    const user = new Users({
-        userFullName: req.body.userFullName,
-        userEmail: req.body.userEmail,
-        userStatus: req.body.userStatus,
-        userActivity: req.body.userActivity,
-        userPassword: req.body.userPassword
-    })
-
+    console.log(req)
     try {
-        const saveUser = await user.save()
-        res.json(saveUser)
+        const allUsers = await Users.find();
+        allUsers.forEach(u => {
+            if (u.userEmail == req.body.userEmail) {
+                res.send({ message: "Email address already in use!", errorCode: 1001 });
+                throw res;
+            }
+        });
+        const user = new Users({
+            userFullName: req.body.userFullName,
+            userEmail: req.body.userEmail,
+            userStatus: req.body.userStatus,
+            userActivity: req.body.userActivity,
+            userPassword: req.body.userPassword
+        });
+
+        const saveUser = await user.save();
+        res.send(saveUser);
     } catch (err) {
-        res.json({ message: err, errorCode: 1005 })
+        res.send({ message: err, errorCode: 1005 });
+        throw err;
     }
 });
-module.exports = router
+module.exports = router;
