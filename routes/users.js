@@ -52,7 +52,6 @@ router.post('/logIn', async(req, res) => {
 });
 // USER REGISTER
 router.post('/signUp', async(req, res) => {
-    console.log(req)
     try {
         const allUsers = await Users.find();
         allUsers.forEach(u => {
@@ -72,7 +71,7 @@ router.post('/signUp', async(req, res) => {
         const saveUser = await user.save();
         res.send(saveUser);
     } catch (err) {
-        res.send({ message: err, errorCode: 1005 });
+        res.send({ message: 'Error had been occurred while signing up', errorCode: 1005 });
         throw err;
     }
 });
