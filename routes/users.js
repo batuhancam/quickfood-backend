@@ -42,6 +42,7 @@ router.post('/logIn', async(req, res) => {
     try {
         const user = await Users.find({ userEmail: req.body.userEmail, userPassword: req.body.userPassword });
         if (user[0].userEmail != null) {
+            console.log(user)
             res.json(user)
         } else {
             res.json({ message: 'User not found!', errorCode: 1008 })
@@ -73,6 +74,30 @@ router.post('/signUp', async(req, res) => {
     } catch (err) {
         res.send({ message: 'Error had been occurred while signing up', errorCode: 1005 });
         throw err;
+    }
+});
+// UPDATE USER
+router.post('/update', async(req, res) => {
+    try {
+        const updatedPost = await Users.updateOne({ _id: req.body.userID }, {
+            $set: {
+                userEmail: req.body.userEmail,
+                userFullName: req.body.userFullName
+            }
+        })
+        res.send(updatedPost)
+    } catch (err) {
+        res.send({ message: err })
+    }
+});
+// DELETE USER
+router.post('/delete', async(req, res) => {
+    try {
+        console.log(req.body)
+        const deletedPost = await Users.deleteOne({ _id: req.body.userID })
+        res.send(deletedPost)
+    } catch (err) {
+        res.send({ message: err })
     }
 });
 module.exports = router;
