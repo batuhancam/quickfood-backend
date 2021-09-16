@@ -1,7 +1,7 @@
 const express = require('express');
 const Favorites = require('../models/Favorites');
 const router = express.Router();
-// Last Error Code 4
+// Last Error Code 5
 
 // GET ALL Favorites
 router.get('/', async(req, res) => {
@@ -41,5 +41,21 @@ router.post('/getByUserID', async(req, res) => {
         res.json({ message: 'Favorutes not found!', errorCode: 3003 })
     }
 });
+
+// IS USER LIKE THE FOOD
+router.post('/isLiked', async(req, res) => {
+    try {
+        const favorites = await Favorites.find();
+        console.log(req.body)
+        favorites.forEach((fav) => {
+            if (fav.userID == req.body.userID && fav.foodID == req.body.foodID) {
+
+                res.json({ status: true })
+            }
+        })
+    } catch (err) {
+        res.json({ message: 'Favorutes not found!', errorCode: 3005, status: false })
+    }
+})
 
 module.exports = router
