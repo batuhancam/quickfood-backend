@@ -42,20 +42,23 @@ router.post('/getByUserID', async(req, res) => {
     }
 });
 
-// IS USER LIKE THE FOOD
-router.post('/isLiked', async(req, res) => {
+router.post('/switch', async(req, res) => {
+    const newFavorite = new Favorites({
+        userID: req.body.userID,
+        foodID: req.body.foodID
+    })
     try {
-        const favorites = await Favorites.find();
-        console.log(req.body)
-        favorites.forEach((fav) => {
-            if (fav.userID == req.body.userID && fav.foodID == req.body.foodID) {
-
-                res.json({ status: true })
-            }
-        })
+        const favorites = await Favorites.find({ userID: req.body.userID, foodID: req.body.foodID });
+        if (favorites.length == 1) {
+            const deletedFavorites = await Favorites.deleteOne({ _id: favorites[0]._id })
+            res.json(deletedFavorites)
+        } else {
+            const saveFavorite = await newFavorite.save()
+            res.json(saveFavorite)
+        }
     } catch (err) {
-        res.json({ message: 'Favorutes not found!', errorCode: 3005, status: false })
+        res.json({ message: err, errorCode: 3004 })
     }
-})
+});
 
 module.exports = router

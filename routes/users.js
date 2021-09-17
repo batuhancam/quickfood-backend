@@ -93,7 +93,6 @@ router.post('/update', async(req, res) => {
 // DELETE USER
 router.post('/delete', async(req, res) => {
     try {
-        console.log(req.body)
         const deletedPost = await Users.deleteOne({ _id: req.body.userID })
         res.send(deletedPost)
     } catch (err) {
