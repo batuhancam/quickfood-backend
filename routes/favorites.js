@@ -60,5 +60,13 @@ router.post('/switch', async(req, res) => {
         res.json({ message: err, errorCode: 3004 })
     }
 });
+router.post('/isLiked', async(req, res) => {
+    const favorites = await Favorites.find({userID: req.body.userID, foodID: req.body.foodID})
+    if(favorites.length == 0){
+        res.json({status: false})
+    }else if(favorites.length == 1){
+        res.json({status: true, data: favorites})
+    }
+})
 
 module.exports = router
