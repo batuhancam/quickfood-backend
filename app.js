@@ -17,11 +17,13 @@ db.once('open', () => {
 const usersRoute = require('./routes/users')
 const foodsRoute = require('./routes/foods')
 const favoritesRoute = require('./routes/favorites')
+const categoriesRoute = require('./routes/categories')
 app.use(cors())
 app.use(express.json())
 app.use('/users', usersRoute)
 app.use('/foods', foodsRoute)
 app.use('/favorites', favoritesRoute)
+app.use('/categories', categoriesRoute)
 
 // Listen this ports
 app.listen(3000)
