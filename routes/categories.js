@@ -1,7 +1,7 @@
 const express = require('express')
 const Categories = require('../models/Categories')
 const router = express.Router();
-//Last error code 5
+//Last error code 7
 // GET ALL CATEGORIES
 router.get('/', async(req, res) => {
     try {
@@ -18,10 +18,23 @@ router.post('/getByCategoryID', async(req, res) => {
         if (category) {
             res.json(category)
         } else {
-            res.json({ message: 'User not found!', errorCode: 5002 })
+            res.json({ message: 'Category not found!', errorCode: 5002 })
         }
     } catch (err) {
         res.json({ message: err, errorCode: 5003 })
+    }
+});
+// GET A USER BY CATEGORYID
+router.post('/getByCategoryName', async(req, res) => {
+    try {
+        const category = await Categories.find({CategoryName: req.body.categoryName})
+        if (category) {
+            res.json(category)
+        } else {
+            res.json({ message: 'Category not found', errorCode: 5006 })
+        }
+    } catch (err) {
+        res.json({ message: err, errorCode: 5007 })
     }
 });
 // CATEGORY ADD
