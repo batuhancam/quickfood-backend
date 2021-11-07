@@ -27,6 +27,7 @@ router.post('/add', async(req, res) => {
 
     try {
         const saveFood = await foods.save()
+        console.log(saveFood)
         res.json(saveFood)
     } catch (err) {
         res.json({ errorMsg: err, errorCode: 2002 })

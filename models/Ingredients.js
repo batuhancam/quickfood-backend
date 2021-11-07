@@ -4,10 +4,6 @@ const ingredientSchema = mongoose.Schema({
     ingredientName: {
         type: String,
         required: true
-    },
-    foodID: {
-        type: String,
-        required: true
     }
 })
 
