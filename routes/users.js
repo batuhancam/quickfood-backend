@@ -8,7 +8,7 @@ router.get('/', async(req, res) => {
         const users = await Users.find();
         res.json(users)
     } catch (err) {
-        res.json({ message: err, errorCode: 1006 })
+        res.json({ message: err, errorCode: 1006 }) 
     }
 });
 // GET A USER BY USERID
@@ -42,7 +42,6 @@ router.post('/logIn', async(req, res) => {
     try {
         const user = await Users.find({ userEmail: req.body.userEmail, userPassword: req.body.userPassword });
         if (user[0].userEmail != null) {
-            console.log(user)
             res.json(user)
         } else {
             res.json({ message: 'User not found!', errorCode: 1008 })

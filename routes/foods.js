@@ -1,5 +1,8 @@
+const e = require('express');
 const express = require('express');
+const axios = require('axios');
 const Foods = require('../models/Foods');
+const Ingredients = require('../models/Ingredients');
 const router = express.Router();
 // Last error code 4
 // GET ALL FOODS
@@ -27,7 +30,6 @@ router.post('/add', async(req, res) => {
 
     try {
         const saveFood = await foods.save()
-        console.log(saveFood)
         res.json(saveFood)
     } catch (err) {
         res.json({ errorMsg: err, errorCode: 2002 })
@@ -53,7 +55,42 @@ router.post('/getByUserId', async(req, res) => {
         res.json({ message: err, errorCode: 2004 })
     }
 })
+router.post('/getByCategoryId', async(req, res) => {
+    try {
+        const food = await Foods.find({ 'categoryID': req.body.categoryID })
+        res.json(food)
+    } catch (err) {
+        res.json({ message: err, errorCode: 2004 })
+    }
+})
 
+router.post('/getByIngredients', async(req, res) => {
+        let searchedFoods = [];
+
+        const foods = await Foods.find();
+        const ingredients = req.body.ingredients;
+        ingredients.map(ingredient => {
+            foods.map(food => {
+                let ingredientCounter = 0;
+                if(food.ingredientIDs.includes(ingredient)){
+                    searchedFoods.push(food)
+                }else{
+                    ingredientCounter++;
+                    if(ingredientCounter >= Math.ceil(food.ingredientIDs.length/2)){
+                        searchedFoods = searchedFoods.filter(sf => {
+                            return sf != food
+                        })
+                    }
+                }
+            })
+        })
+
+        const uniqueFoods = searchedFoods.filter(function(item, pos) {
+            return searchedFoods.indexOf(item) == pos;
+        })
+        
+        res.json(uniqueFoods);
+})
 
 
 module.exports = router
